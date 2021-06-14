@@ -16,6 +16,6 @@ class HomeController extends Controller
         return $content
             ->header('矿洞风险监测系统')
             ->description('Tunnel risk monitoring system')
-            ->body();
+            ->body("hello,world");
     }
 }
