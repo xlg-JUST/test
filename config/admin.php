@@ -11,8 +11,8 @@ return [
     | login page.
     |
     */
-    'name' => 'Dcat Admin',
-
+//    'name' => 'Dcat Admin', 这里修改登陆界面标题
+    'name' => 'Login',
     /*
     |--------------------------------------------------------------------------
     | dcat-admin logo
@@ -22,7 +22,8 @@ return [
     | `img` tag, eg '<img src="http://logo-url" alt="Admin logo">'.
     |
     */
-    'logo' => '<img src="/vendor/dcat-admin/images/logo.png" width="35"> &nbsp;Dcat Admin',
+//    'logo' => '<img src="/vendor/dcat-admin/images/logo.png" width="35"> &nbsp;Dcat Admin', 这里修改主界面logo
+    'logo' => '<img src="/vendor/dcat-admin/images/logo.png" width="35"> &nbsp;矿洞风险检测系统',
 
     /*
     |--------------------------------------------------------------------------
