@@ -10,5 +10,10 @@ class Gaslevel extends Model
 {
 	use HasDateTimeFormatter;
     protected $table = 'gaslevel';
-    
+
+    public function dustlevel()
+    {
+        return $this->belongsTo(Dustlevel::class,'id');
+    }
+
 }

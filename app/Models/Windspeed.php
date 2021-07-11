@@ -10,5 +10,9 @@ class Windspeed extends Model
 {
 	use HasDateTimeFormatter;
     protected $table = 'windspeed';
-    
+
+    public function windspeed()
+    {
+        return $this->belongsTo(Dustlevel::class, 'id');
+    }
 }

@@ -7,8 +7,17 @@ use Dcat\Admin\Widgets\Metrics\Line;
 use Illuminate\Http\Request;
 use App\Models\Gaslevel;
 
-class GasChart extends Line
+class GasQuery extends Line
 {
+    public $data;
+
+    public function __construct($data=[1,2])
+    {
+        parent::__construct();
+
+        $this->data = $data;
+    }
+
     /**
      * 初始化卡片内容
      *
@@ -18,55 +27,33 @@ class GasChart extends Line
     {
         parent::init();
 
-        $this->title('Concentration');
+        $this->title('Gas Concentration');
         $this->chartColors('#000000');
-        $this->dropdown([
-            '6' => 'Last hour',
-            '72' => 'Last 12 hours',
-            '144' => 'Last day',
-            '1008' => 'Last week',
-        ]);
     }
 
-    /**
-     * 处理请求
-     *
-     * @param Request $request
-     *
-     * @return mixed|void
-     */
     public function handle(Request $request)
     {
-        $data = Gaslevel::query()->where('id','>',11952)->pluck('Concentration')->toArray(); //  存在技术债
+        // 获取 parameters 方法设置的自定义参数
+        $data0 = $request->get('data');
+        $star = $data0[0];
+        $end = $data0[1];
+        $data = Gaslevel::query()->whereBetween('id',[$star,$end])->pluck('Concentration')->toArray();
+
         switch ($request->get('option')) {
-            case '1008':
-                // 卡片内容
-                $this->withContent(array_sum($data)/sizeof($data));
-                // 图表数据
-                $this->withChart($data);
-                break;
-            case '144':
-                $data = array_slice($data,-144);
-                // 卡片内容
-                $this->withContent(array_sum($data)/sizeof($data));
-                // 图表数据
-                $this->withChart($data);
-                break;
-            case '72':
-                // 卡片内容
-                $data = array_slice($data,-72);
-                $this->withContent(array_sum($data)/sizeof($data));
-                // 图表数据
-                $this->withChart($data);
-                break;
-            case '6':
             default:
-                $data = array_slice($data,-6);
-                // 卡片内容
+                // 你的数据查询逻辑
                 $this->withContent(array_sum($data)/sizeof($data));
-                // 图表数据
                 $this->withChart($data);
+                break;
         }
+
+    }
+
+    public function parameters(): array
+    {
+        return [
+            'data'        => $this->data
+        ];
     }
 
     /**

@@ -7,16 +7,15 @@ use Dcat\Admin\Widgets\Metrics\Line;
 use Illuminate\Http\Request;
 use App\Models\Dustlevel;
 
-class DustChart extends Line
+class DustQuery extends Line
 {
+    public $data;
 
-    protected $data;
-    public function __construct($data = null)
+    public function __construct($data=[1,2])
     {
         parent::__construct();
 
         $this->data = $data;
-
     }
 
     /**
@@ -30,64 +29,32 @@ class DustChart extends Line
 
         $this->title('Dust Concentration');
         $this->chartColors('#996600');
-        $this->dropdown([
-            '6' => 'Last hour',
-            '72' => 'Last 12 hours',
-            '144' => 'Last day',
-            '1008' => 'Last week',
-        ]);
     }
 
-    /**
-     * 处理请求
-     *
-     * @param Request $request
-     *
-     * @return mixed|void
-     */
     public function handle(Request $request)
     {
-        $data = $request->get('data');
-//        $data = Dustlevel::query()->where('id','>',11952)->pluck('dust_concentration')->toArray(); //  存在技术债
+        // 获取 parameters 方法设置的自定义参数
+        $data0 = $request->get('data');
+        $star = $data0[0];
+        $end = $data0[1];
+        $data = Dustlevel::query()->whereBetween('id',[$star,$end])->pluck('dust_concentration')->toArray();
+
         switch ($request->get('option')) {
-            case '1008':
-                // 卡片内容
-                $data = array_slice($data,-1008);
-                $this->withContent(array_sum($data)/sizeof($data));
-                // 图表数据
-                $this->withChart($data);
-                break;
-            case '144':
-                $data = array_slice($data,-144);
-                // 卡片内容
-                $this->withContent(array_sum($data)/sizeof($data));
-                // 图表数据
-                $this->withChart($data);
-                break;
-            case '72':
-                // 卡片内容
-                $data = array_slice($data,-72);
-                $this->withContent(array_sum($data)/sizeof($data));
-                // 图表数据
-                $this->withChart($data);
-                break;
-            case '6':
             default:
-                $data = array_slice($data,-6);
-                // 卡片内容
+                // 你的数据查询逻辑
                 $this->withContent(array_sum($data)/sizeof($data));
-                // 图表数据
                 $this->withChart($data);
+                break;
         }
+
     }
 
     public function parameters(): array
     {
         return [
-            'data'        => $this->data,
+            'data'        => $this->data
         ];
     }
-
 
     /**
      * 设置图表数据.
@@ -127,4 +94,3 @@ HTML
         );
     }
 }
-

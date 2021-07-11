@@ -10,5 +10,10 @@ class Temperature extends Model
 {
 	use HasDateTimeFormatter;
     protected $table = 'temperature';
-    
+
+    public function dustlevel()
+    {
+        return $this->belongsTo(Dustlevel::class, 'id');
+    }
+
 }
