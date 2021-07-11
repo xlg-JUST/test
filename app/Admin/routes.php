@@ -17,5 +17,10 @@ Route::group([
     $router->resource('temperature', 'TemperatureController');
     $router->resource('windspeed', 'WindspeedController');
     $router->resource('dustlevel', 'DustlevelController');
-    $router->resource('图纸解析', 'D:\Toolbar\phpstudy_pro\WWW\test.local');
+    $router->resource('query', 'QueryController');
+    $router->resource('analysis', 'AnalysisController');
+    $router->resource('safety', 'SafetyController');
+//    $router->resource('图纸解析', 'D:\Toolbar\phpstudy_pro\WWW\test.local');
+
+
 });
