@@ -20,6 +20,8 @@ Route::group([
     $router->resource('query', 'QueryController');
     $router->resource('analysis', 'AnalysisController');
     $router->resource('safety', 'SafetyController');
+    $router->resource('alert', 'AlertController');
+    $router->resource('help', 'HelpController');
 //    $router->resource('图纸解析', 'D:\Toolbar\phpstudy_pro\WWW\test.local');
 
 
